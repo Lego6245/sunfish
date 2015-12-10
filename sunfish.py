@@ -351,8 +351,10 @@ def render(i):
 
 def print_pos(pos):
     print()
-    uni_pieces = {'R':'♜', 'N':'♞', 'B':'♝', 'Q':'♛', 'K':'♚', 'P':'♟',
-                  'r':'♖', 'n':'♘', 'b':'♗', 'q':'♕', 'k':'♔', 'p':'♙', '.':'·'}
+    # uni_pieces = {'R':'♜', 'N':'♞', 'B':'♝', 'Q':'♛', 'K':'♚', 'P':'♟',
+                  # 'r':'♖', 'n':'♘', 'b':'♗', 'q':'♕', 'k':'♔', 'p':'♙', '.':'·'}
+    uni_pieces = {'R':'R', 'N':'N', 'B':'B', 'Q':'Q', 'K':'K', 'P':'P',
+                  'r':'r', 'n':'n', 'b':'b', 'q':'q', 'k':'k', 'p':'p', '.':'-'}
     for i, row in enumerate(pos.board.strip().split('\n ')):
         print(' ', 8-i, ' '.join(uni_pieces.get(p, p) for p in row))
     print('    a b c d e f g h \n\n')
@@ -383,7 +385,7 @@ def main():
                 print("Please enter a move like g8f6")
         pos = pos.move(move)
         with open(filename, 'a') as f:
-            f.write("" + str(move) + ",user" + "\n")
+            f.write("" + str(move) + "," +  pos.board[move[0]] + ",user" + "\n")
         f.close()
 
         # After our move we rotate the board and print it again.
@@ -394,7 +396,7 @@ def main():
         move, score = search(pos)
         #store the move
         with open(filename, 'a') as f:
-            f.write("" + str(move) + "," + str(score) + "\n")
+            f.write("" + str(move) + "," +  pos.board[move[0]] + "," + str(score) + "\n")
         f.close()
         if score <= -MATE_VALUE:
             print("You won")
