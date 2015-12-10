@@ -360,9 +360,18 @@ def print_pos(pos):
 
 def main():
     pos = Position(initial, 0, (True,True), (True,True), 0, 0)
+    recordGame = False
+    print("Please enter a name to store the game as, leave blank to not do so.")
+    filename = input('File Name: ')
+    if filename:
+        recordGame = True
+        with open(filename, 'a') as f:
+            f.write("GAME START" + "\n")
+        f.close()
+    else:
+        print("Not recording game.")
     while True:
         print_pos(pos)
-
         # We query the user until she enters a legal move.
         move = None
         while move not in pos.gen_moves():
@@ -373,6 +382,9 @@ def main():
                 # Inform the user when invalid input (e.g. "help") is entered
                 print("Please enter a move like g8f6")
         pos = pos.move(move)
+        with open(filename, 'a') as f:
+            f.write("" + str(move) + ",user" + "\n")
+        f.close()
 
         # After our move we rotate the board and print it again.
         # This allows us to see the effect of our move.
@@ -380,6 +392,10 @@ def main():
 
         # Fire up the engine to look for a move.
         move, score = search(pos)
+        #store the move
+        with open(filename, 'a') as f:
+            f.write("" + str(move) + "," + str(score) + "\n")
+        f.close()
         if score <= -MATE_VALUE:
             print("You won")
             break
